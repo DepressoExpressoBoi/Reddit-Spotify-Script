@@ -2,7 +2,7 @@ import json
 import requests
 
 userId = 'mr.redderson'
-spotifyToken = 'BQDnBs7zT-nW_O4Y9D5U3grbIme_ri5wNN5y_BmRIkOAE9dgwpHTkhLcbCVdGBbCW2tKf7PKKMisiClAJqcmHBrgkE3lU3DBGt5KQawrIcVZdRkU4AyRZd35Nhct32hBUiG5LOY7fX_1MVyf0clxXfPd'
+spotifyToken = 'BQBflb_3f4DmS5eaYBWRD3KU3hd9aW5Mk0KYNWUTAvUOsXjt3b73njlD5jq0gTo4atZ8M_HdKDopLQfA-TlyvDzPUCmY9IyfL3yfywjwnyhS5E5X6dA8getMa_c08CCAZ9PpeA_nrZ1GFaLAi3q2bcYk54fxvUDSrLO1NTZ-IXLRgp7R7vX_TbcQLDjkJ-hest0tNsg5GZPRAEvwrhs'
 songInfo = {}
 class spotifyClient():
     def __init__(self):
@@ -31,8 +31,8 @@ class spotifyClient():
         return responseJson["id"]
 
     def searchSong(self, songName, artist):
-        query = 'https://api.spotify.com/v1/search?query=track%3A{}+artist%3A{}&type=track&offset=0&limit=20'.format(songName, artist)
-        resonse = requests.get(
+        query = 'https://api.spotify.com/v1/search?query=track%3A{}+artist%3A{}&type=track&offset=0&limit=5'.format(songName, artist)
+        response = requests.get(
             query,
             headers = {
                 "Content-Type": "application/json",
@@ -40,20 +40,24 @@ class spotifyClient():
             }
         )
 
-        responseJson = resonse.json
-        songs = responseJson["tracks"]["items"]
+        responseJson = response.json()
+        print(responseJson)
+        track = responseJson["tracks"]["items"]
+        
 
-        uri = songs[0]["uri"]
-        return uri
+        if len(track) > 0:
+            uri = track[0]["uri"]
+            return uri
+        
 
     def addSongtoPlaylist(self, songs):
         
         uris = []
-        for i in len(songs):
+        for x in range(len(songs)):
             self.songInfo = {
-                "spotUri": self.searchSong(songs[i, 0], songs[i, 1])
+                "spotUri": self.searchSong(songs[x][0], songs[x][1])
             }
-            uris.append(songInfo["spotUri"])
+            uris.append(self.songInfo["spotUri"])
 
         playlistId = self.createPlaylist()
 

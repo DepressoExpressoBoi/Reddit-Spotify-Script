@@ -13,28 +13,27 @@ songs = []
 
 class redditClient():
     def __init__(self):
-        pass
+        self.subreddit = subreddit
+        self.submissions = submissions
+        self.songs = songs
 
-    def getSongs():
-        for submission in subreddit.hot(limit = lim):
+    def getSongs(self):
+        for submission in self.subreddit.hot(limit = lim):
             if not submission.stickied:
-                submissions.append(submission.title) 
+                self.submissions.append(submission.title) 
 
-        for x in range(len(submissions)):
-            if 'Indie' in submissions[x]:
-                if ' - ' in submissions[x]:
-                    song = submissions[x].split(' - ')
-                elif ' -- ' in submissions[x]:
-                    song = submissions[x].split(' -- ')
+        for x in range(len(self.submissions)):
+            if 'Indie' in self.submissions[x]:
+                if ' - ' in self.submissions[x]:
+                    song = self.submissions[x].split(' - ')
+                elif ' -- ' in self.submissions[x]:
+                    song = self.submissions[x].split(' -- ')
                 artist = song[0]
                 song = song[1].split(' [')
-                songs.append([song[0], artist])
+                self.songs.append([song[0].replace(" ", ""), artist])
 
         return songs
 
-
-
-print(redditClient.getSongs())
         
 
 
